@@ -1,0 +1,20 @@
+# Runtimes & dependencies
+node_modules/
+backend/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local data & uploaded documents (PRIVACY STRICT)
+data/
+backend/app/data/
+*.db
+*.sqlite
+
+# Environment & local settings
+.env
+.DS_Store
+
+# Build outputs
+frontend/dist/
+frontend/build/

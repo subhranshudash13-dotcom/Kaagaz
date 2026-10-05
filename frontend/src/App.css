@@ -1,0 +1,410 @@
+/* ========================================================
+   KAAGAZ — CONTRIBO SAAS DESIGN SYSTEM STYLES
+   ======================================================== */
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--base);
+  color: var(--primary);
+  font-family: var(--font-sans);
+}
+
+/* 1. FLOATING PILL NAVBAR */
+.floating-navbar-wrapper {
+  position: sticky;
+  top: 12px;
+  z-index: 100;
+  padding-inline: 16px;
+  width: 100%;
+  pointer-events: none;
+}
+
+.floating-navbar-container {
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--hairline);
+  border-radius: 9999px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px -2px rgba(43, 27, 21, 0.04), 0 1px 3px rgba(43, 27, 21, 0.02);
+  transition: all 0.2s ease;
+}
+
+.dark .floating-navbar-container {
+  background: rgba(26, 20, 17, 0.88);
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.35);
+}
+
+.floating-navbar-container.scrolled {
+  box-shadow: 0 10px 32px -4px rgba(43, 27, 21, 0.08);
+  border-color: var(--hairline);
+}
+
+/* Brand Monogram */
+.brand-monogram-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.monogram-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 15px;
+  font-family: var(--font-heading);
+  box-shadow: 0 2px 8px var(--accent-glow);
+  transition: transform 0.2s ease;
+}
+
+.brand-monogram-logo:hover .monogram-badge {
+  transform: scale(1.05);
+}
+
+.brand-title-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  font-family: var(--font-heading);
+}
+
+.brand-title-text .accent-part {
+  color: var(--accent);
+}
+
+/* Nav Navigation Links */
+.pill-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pill-nav-btn {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill-nav-btn:hover {
+  color: var(--primary);
+  background: var(--surface-raised);
+}
+
+.pill-nav-btn.active {
+  color: var(--primary);
+  font-weight: 700;
+  background: var(--surface-raised);
+}
+
+/* 2. HERO SECTION */
+.contribo-hero {
+  position: relative;
+  padding-top: 36px;
+  padding-bottom: 72px;
+  overflow: hidden;
+  background: var(--base);
+  background-image: radial-gradient(circle at 85% 20%, rgba(198, 120, 72, 0.08), transparent 55%);
+}
+
+.hero-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--secondary);
+  font-family: var(--font-mono);
+  margin-bottom: 20px;
+}
+
+.hero-main-title {
+  font-size: clamp(38px, 5.5vw, 68px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  margin-bottom: 20px;
+}
+
+.hero-gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, #D48B5D 50%, #B06538 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subparagraph {
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.6;
+  color: var(--secondary);
+  max-width: 620px;
+  margin-bottom: 32px;
+}
+
+/* Contribo Interactive Search Bar */
+.contribo-search-bar {
+  width: 100%;
+  max-width: 580px;
+  height: 54px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding-left: 18px;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.contribo-search-bar:hover,
+.contribo-search-bar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 6px 24px var(--accent-glow);
+}
+
+.search-placeholder-text {
+  flex: 1;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-submit-btn {
+  background: var(--accent);
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.search-submit-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* Quick Try Tags */
+.quick-try-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 28px;
+}
+
+.quick-tag-chip {
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quick-tag-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 3. BENTO CARDS & SURFACES */
+.bento-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s ease;
+}
+
+.bento-card:hover {
+  border-color: var(--hairline-subtle);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -4px rgba(43, 27, 21, 0.06);
+}
+
+.bento-badge-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid rgba(198, 120, 72, 0.25);
+}
+
+/* 4. DASHBOARD & COCKPIT CONTROLS */
+.dashboard-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.dashboard-stat-card:hover {
+  border-color: var(--hairline);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* Document Cards */
+.doc-item-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.doc-item-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* Status Badges */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.status-chip.urgent {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid rgba(201, 106, 106, 0.3);
+}
+
+.status-chip.upcoming {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid rgba(200, 141, 58, 0.3);
+}
+
+.status-chip.monitored {
+  background: var(--merge-bg);
+  color: var(--merge);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.status-chip.verified {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid rgba(94, 158, 109, 0.3);
+}
+
+/* 5. BUTTON STYLES */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--hairline);
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-raised);
+  border-color: var(--hairline);
+}

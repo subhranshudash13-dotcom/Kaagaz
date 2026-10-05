@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* CONTRIBO LUXURY LEDGER PALETTE — LIGHT MODE */
+    --base: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-raised: #F3EFEA;
+    --hairline: #E6DFD5;
+    --hairline-subtle: rgba(230, 223, 213, 0.6);
+    
+    --primary: #2B1B15;
+    --secondary: #5A4D46;
+    --muted: #93857D;
+    
+    --accent: #C67848;
+    --accent-hover: #B06538;
+    --accent-glow: rgba(198, 120, 72, 0.18);
+    
+    --brass: #C67848;
+    --brass-hover: #B06538;
+    
+    --success: #5E9E6D;
+    --success-bg: rgba(94, 158, 109, 0.12);
+    --warning: #C88D3A;
+    --warning-bg: rgba(200, 141, 58, 0.12);
+    --error: #C96A6A;
+    --error-bg: rgba(201, 106, 106, 0.12);
+    --alert: #C96A6A;
+    
+    --merge: #8B5CF6;
+    --merge-hover: #7C3AED;
+    --merge-bg: rgba(139, 92, 246, 0.12);
+
+    /* Typography */
+    --font-sans: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Plus Jakarta Sans', 'DM Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+
+    /* Global Container */
+    --page-max-width: 1200px;
+    --page-gutter: 24px;
+    --reading-max-width: 860px;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+  }
+
+  .dark {
+    /* CONTRIBO LUXURY LEDGER PALETTE — DARK MODE */
+    --base: #110D0B;
+    --surface: #1A1411;
+    --surface-raised: #241D18;
+    --hairline: #332822;
+    --hairline-subtle: rgba(51, 40, 34, 0.6);
+    
+    --primary: #FBF9F6;
+    --secondary: #A08C83;
+    --muted: #736259;
+    
+    --accent: #E59569;
+    --accent-hover: #F0A780;
+    --accent-glow: rgba(229, 149, 105, 0.22);
+    
+    --brass: #E59569;
+    --brass-hover: #F0A780;
+    
+    --success: #5E9E6D;
+    --success-bg: rgba(94, 158, 109, 0.18);
+    --warning: #C88D3A;
+    --warning-bg: rgba(200, 141, 58, 0.18);
+    --error: #C96A6A;
+    --error-bg: rgba(201, 106, 106, 0.18);
+    --alert: #C96A6A;
+    
+    --merge: #A78BFA;
+    --merge-hover: #C084FC;
+    --merge-bg: rgba(167, 139, 250, 0.18);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--base);
+  color: var(--primary);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global Content Geometry Containers */
+.page-container {
+  width: 100%;
+  max-width: var(--page-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+.reading-container {
+  width: 100%;
+  max-width: var(--reading-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Contribo Elevation Utilities */
+.elevation-1 { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); }
+.elevation-2 { box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06); }
+.elevation-3 { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08); }
+.elevation-4 { box-shadow: 0 20px 48px rgba(0, 0, 0, 0.12); }
+
+/* Contribo Paper Noise Overlay */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3E%3C/svg%3E");
+}
+
+/* Radial Glow Effects */
+.hero-radial-glow {
+  background-image: radial-gradient(circle at 85% 25%, rgba(198, 120, 72, 0.09), transparent 60%);
+}
+
+.dark .hero-radial-glow {
+  background-image: radial-gradient(circle at 85% 25%, rgba(229, 149, 105, 0.07), transparent 60%);
+}
+
+/* Animations */
+@keyframes pulseBeacon {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.3; }
+}
+
+.pulsing-beacon {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  position: relative;
+}
+.pulsing-beacon::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background-color: var(--accent-glow);
+  animation: pulseBeacon 1.8s infinite ease-in-out;
+}
+
+@keyframes marqueeLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marqueeLeft 45s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-left:hover {
+  animation-play-state: paused;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marqueeRight 35s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}

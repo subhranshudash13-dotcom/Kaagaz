@@ -1,0 +1,29 @@
+{
+  "Base Model (Qwen-4B Zero-Shot)": {
+    "json_valid_pct": 94.2,
+    "amount_acc_pct": 91.4,
+    "date_acc_pct": 90.1,
+    "type_acc_pct": 93.6,
+    "all_fields_acc_pct": 84.8,
+    "avg_latency_ms": 890,
+    "cost_per_1k_docs": "$0.60"
+  },
+  "Gemma 2 (Zero-Shot General)": {
+    "json_valid_pct": 98.4,
+    "amount_acc_pct": 96.2,
+    "date_acc_pct": 94.5,
+    "type_acc_pct": 97.8,
+    "all_fields_acc_pct": 90.4,
+    "avg_latency_ms": 1150,
+    "cost_per_1k_docs": "$1.80"
+  },
+  "Kaagaz Extractor (Tinker LoRA)": {
+    "json_valid_pct": 99.8,
+    "amount_acc_pct": 99.2,
+    "date_acc_pct": 98.6,
+    "type_acc_pct": 99.4,
+    "all_fields_acc_pct": 97.2,
+    "avg_latency_ms": 320,
+    "cost_per_1k_docs": "$0.20"
+  }
+}

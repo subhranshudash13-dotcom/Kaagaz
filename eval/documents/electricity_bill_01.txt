@@ -1,0 +1,11 @@
+State Electricity Board
+Consumer No: 102938475
+Consumer Name: Rajesh Kumar
+Billing Period: 01/09/2026 to 30/09/2026
+Issue Date: 2026-10-01
+Due Date: 2026-10-15
+Amount Due: 2481.00
+Previous Amount: 2102.00
+Units Consumed: 340 kWh
+Meter No: MTR-987654
+Service Address: 42 Palm Avenue, Mumbai

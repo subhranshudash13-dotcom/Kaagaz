@@ -1,0 +1,17 @@
+State Electricity Distribution Company Ltd.
+ELECTRICITY BILL & NOTICE
+
+Consumer No: 102938475
+Consumer Name: Rajesh Kumar
+Service Address: 42 Palm Avenue, Mumbai
+Meter No: MTR-987654
+
+Billing Period: 01/09/2026 to 30/09/2026
+Issue Date: 2026-10-01
+Due Date: 2026-10-15
+
+Units Consumed: 340 kWh
+Previous Bill Amount: ₹2,102.00
+Current Bill Amount Due: ₹2,481.00
+
+Please pay on or before the due date to avoid late payment surcharge.
