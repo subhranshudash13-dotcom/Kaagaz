@@ -9,5 +9,4 @@ pymupdf
 pillow
 python-dotenv
 rapidocr-onnxruntime
-winocr
 pytesseract

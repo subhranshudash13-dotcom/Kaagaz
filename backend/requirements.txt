@@ -5,6 +5,9 @@ sqlalchemy
 python-multipart
 httpx
 pypdf
+pymupdf
 pillow
+rapidocr-onnxruntime
+pytesseract
 pytest
 python-dotenv
