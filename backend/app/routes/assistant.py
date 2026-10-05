@@ -28,7 +28,7 @@ async def ask_assistant(req: AskRequest, db: Session = Depends(get_db)):
     # 1. Try local Ollama / Cloud Gemini LLM if active
     provider = OllamaGemmaProvider()
     health = await provider.check_health()
-    if health.get("online") or provider.model:
+    if health.get("online"):
         try:
             # Build clean context for real LLM if running
             vault_info = assistant_engine.get_vault_summary()
