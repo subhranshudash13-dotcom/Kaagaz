@@ -412,15 +412,31 @@ export default function App() {
         )}
 
         {/* TAB 1: HOME */}
-        {currentTab === 'home' && dashboardData && (
-          <HomeView
-            dashboardData={dashboardData}
-            onToggleAction={handleToggleAction}
-            onViewDocument={handleViewDetail}
-            onNavigateTab={(tab) => navigateTo(tab === 'home' ? 'dashboard' : tab)}
-            onUploadFile={handleFileUpload}
-            onAskAssistant={handleAskAssistant}
-          />
+        {currentTab === 'home' && (
+          dashboardData ? (
+            <HomeView
+              dashboardData={dashboardData}
+              onToggleAction={handleToggleAction}
+              onViewDocument={handleViewDetail}
+              onNavigateTab={(tab) => navigateTo(tab === 'home' ? 'dashboard' : tab)}
+              onUploadFile={handleFileUpload}
+              onAskAssistant={handleAskAssistant}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center min-h-[360px] p-8 text-center rounded-2xl bg-[var(--surface)] border border-[var(--hairline)] shadow-xs">
+              <div className="w-10 h-10 mb-4 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
+              <h3 className="text-base font-bold text-[var(--primary)] mb-1">Loading Kaagaz Vault...</h3>
+              <p className="text-xs text-[var(--muted)] max-w-md mb-4 font-mono">
+                Connecting to backend API at <code className="bg-[var(--surface-sunken)] px-1.5 py-0.5 rounded text-[var(--accent)]">{API_BASE}</code>
+              </p>
+              <button
+                onClick={() => fetchAllData()}
+                className="px-4 py-2 text-xs font-bold rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white transition-all cursor-pointer"
+              >
+                Retry Connection
+              </button>
+            </div>
+          )
         )}
 
         {/* TAB 2: ACTIONS */}

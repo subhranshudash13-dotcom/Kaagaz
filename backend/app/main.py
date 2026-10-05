@@ -14,12 +14,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger("kaagaz.main")
 
-# Initialize DB tables
+# Initialize DB tables and seed if empty
 Base.metadata.create_all(bind=engine)
+try:
+    _init_db = SessionLocal()
+    seed_demo_household_if_empty(_init_db)
+    _init_db.close()
+except Exception as e:
+    logger.warning(f"Initial DB seeding: {e}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: seed initial demo household if database is empty
+    # Startup: ensure demo household is seeded if empty
     db = SessionLocal()
     try:
         seed_demo_household_if_empty(db)

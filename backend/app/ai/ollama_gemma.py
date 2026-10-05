@@ -141,6 +141,7 @@ Return JSON object containing extracted fields for {doc_type}.
 
         return self._heuristic_extract(text, doc_type)
 
+
     async def answer_question(self, context: str, question: str) -> str:
         prompt = f"""Answer the question based ONLY on the following confirmed document facts.
 If the answer is not in the facts, state "I do not have enough information in the confirmed document."
