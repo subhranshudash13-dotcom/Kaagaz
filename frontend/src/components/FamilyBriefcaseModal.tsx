@@ -9,7 +9,8 @@ export const FamilyBriefcaseModal: React.FC<FamilyBriefcaseModalProps> = ({ onCl
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/dashboard/briefcase')
+    const apiBase = import.meta.env.VITE_API_BASE_URL || '/api';
+    fetch(`${apiBase}/dashboard/briefcase`)
       .then((res) => res.json())
       .then((data) => {
         setBriefcaseData(data);

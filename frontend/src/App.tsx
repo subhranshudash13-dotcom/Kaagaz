@@ -22,7 +22,7 @@ import {
 } from './types';
 import { Sparkles, Shield, Upload, FileText, ArrowRight, FolderLock, Activity, Plus } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 
 export default function App() {
   // Navigation State

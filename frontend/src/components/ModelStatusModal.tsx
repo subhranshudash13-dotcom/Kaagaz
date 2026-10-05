@@ -9,7 +9,8 @@ export const ModelStatusModal: React.FC<ModelStatusModalProps> = ({ onClose }) =
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/health')
+    const apiBase = import.meta.env.VITE_API_BASE_URL || '/api';
+    fetch(`${apiBase}/health`)
       .then((res) => res.json())
       .then((data) => {
         setHealthData(data);
