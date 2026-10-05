@@ -2,15 +2,34 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-DATA_DIR = BASE_DIR / "data"
+
+# Determine if running in serverless / read-only environment
+is_serverless = os.getenv("VERCEL") == "1" or os.getenv("AWS_LAMBDA_FUNCTION_NAME") is not None
+
+if is_serverless:
+    DATA_DIR = Path("/tmp/kaagaz_data")
+else:
+    DATA_DIR = BASE_DIR / "data"
+
 DOCUMENTS_DIR = DATA_DIR / "documents"
 THUMBNAILS_DIR = DATA_DIR / "thumbnails"
 DB_DIR = DATA_DIR / "db"
 
-# Create directories if they do not exist
-DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
-THUMBNAILS_DIR.mkdir(parents=True, exist_ok=True)
-DB_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
+    THUMBNAILS_DIR.mkdir(parents=True, exist_ok=True)
+    DB_DIR.mkdir(parents=True, exist_ok=True)
+except Exception:
+    DATA_DIR = Path("/tmp/kaagaz_data")
+    DOCUMENTS_DIR = DATA_DIR / "documents"
+    THUMBNAILS_DIR = DATA_DIR / "thumbnails"
+    DB_DIR = DATA_DIR / "db"
+    try:
+        DOCUMENTS_DIR.mkdir(parents=True, exist_ok=True)
+        THUMBNAILS_DIR.mkdir(parents=True, exist_ok=True)
+        DB_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
 class Settings:
     HOST: str = os.getenv("HOST", "127.0.0.1")
