@@ -79,8 +79,8 @@ async def confirm_document_fields(
 ):
     service = DocumentService(db)
     try:
-        confirmed_fields = payload.get("fields", payload)
-        doc_type = payload.get("doc_type") if "fields" in payload else None
+        confirmed_fields = payload.get("confirmed_facts") or payload.get("fields") or {k: v for k, v in payload.items() if k != "doc_type"}
+        doc_type = payload.get("doc_type")
         res = service.confirm_document(document_id, confirmed_fields, doc_type=doc_type)
         return res
     except ValueError as ve:

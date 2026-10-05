@@ -336,9 +336,9 @@ export const FooterModals: React.FC<FooterModalsProps> = ({
                 <h4 className="font-bold text-[#172033] text-base">How Kaagaz Protects Your Family</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm">
                   <div className="p-4 rounded-xl bg-white border border-[#E7E2D9] shadow-sm space-y-1.5">
-                    <strong className="text-[#172033] block font-bold text-sm">1-Click Emergency Briefcase</strong>
+                    <strong className="text-[#172033] block font-bold text-sm">Multi-Engine Local OCR</strong>
                     <p className="text-stone-600 leading-relaxed">
-                      Clicking "Briefcase" generates a structured, printable physical dossier of all active utility accounts, warranty contacts, and statutory property references.
+                      Kaagaz processes documents with PyMuPDF, RapidOCR deep learning ONNX, and Windows Media OCR to reconstruct exact numbers, dates, and text locally.
                     </p>
                   </div>
                   <div className="p-4 rounded-xl bg-white border border-[#E7E2D9] shadow-sm space-y-1.5">

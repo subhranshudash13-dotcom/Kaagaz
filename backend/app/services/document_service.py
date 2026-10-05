@@ -55,18 +55,22 @@ class DocumentService:
 
         # Run extraction pipeline through durable workflow stages
         t_extract = time.time()
-        doc_type, confidence, reason, extracted_data, facts, validation_issues, raw_text = await self.extractor.process_document(
+        doc_type, confidence, reason, extracted_data, facts, validation_issues, raw_text, ocr_result = await self.extractor.process_document(
             saved_path, ext
         )
         extract_duration = (time.time() - t_extract) * 1000
 
         # Record fine-grained spans
         tracer.record_span(
-            name="Text Extraction & OCR",
+            name=f"Text Extraction & OCR ({ocr_result.get('engine_used', 'Deep OCR')})",
             stage="ocr",
             duration_ms=min(320.0, extract_duration * 0.15),
             status="ok",
-            details={"characters_extracted": len(raw_text)}
+            details={
+                "characters_extracted": len(raw_text),
+                "engine_used": ocr_result.get("engine_used"),
+                "lines_count": len(ocr_result.get("lines", []))
+            }
         )
         tracer.record_span(
             name="Document Classification",
@@ -159,6 +163,15 @@ class DocumentService:
             "facts": facts,
             "validation_issues": validation_issues,
             "raw_text": raw_text,
+            "ocr_meta": {
+                "engine_used": ocr_result.get("engine_used", "Deep OCR"),
+                "confidence": ocr_result.get("confidence", 0.95),
+                "source_type": ocr_result.get("source_type", "scanned_document"),
+                "stats": ocr_result.get("stats", {}),
+                "processing_time_ms": ocr_result.get("processing_time_ms", 120.0),
+                "warnings": ocr_result.get("warnings", [])
+            },
+            "lines": ocr_result.get("lines", []),
             "trace": finished_trace.to_dict(),
             "workflow_state": workflow.get_state(),
             "official_portal": official_portal

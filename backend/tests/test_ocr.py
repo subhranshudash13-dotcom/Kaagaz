@@ -37,7 +37,8 @@ async def test_document_extractor_integration(tmp_path):
     txt_path.write_text("Samsung Electronics Smart Washing Machine\nModel: Inverter Front Load\nSerial: WM-2026-991823\nPurchase Date: 2026-05-10\nWarranty: 24 Months", encoding="utf-8")
 
     extractor = DocumentExtractor()
-    doc_type, conf, reason, extracted, facts, issues, raw_text = await extractor.process_document(txt_path, ".txt")
+    doc_type, conf, reason, extracted, facts, issues, raw_text, ocr_res = await extractor.process_document(txt_path, ".txt")
     assert doc_type == "warranty"
     assert len(facts) >= 3
     assert conf > 0.6
+    assert ocr_res["status"] == "OCR_SUCCESS"

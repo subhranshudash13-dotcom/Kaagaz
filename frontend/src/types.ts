@@ -76,6 +76,26 @@ export interface DocumentItem {
   trace?: PipelineTrace | null;
 }
 
+export interface OCRLine {
+  text: string;
+  confidence: number;
+  box: [number, number, number, number]; // [x, y, w, h]
+}
+
+export interface OCRMeta {
+  engine_used: string;
+  confidence: number;
+  source_type: string;
+  stats?: {
+    word_count?: number;
+    character_count?: number;
+    line_count?: number;
+    pages_count?: number;
+  };
+  processing_time_ms?: number;
+  warnings?: string[];
+}
+
 export interface ProvisionalExtraction {
   document_id: string;
   workflow_id?: string;
@@ -89,10 +109,13 @@ export interface ProvisionalExtraction {
   facts: Fact[];
   validation_issues: string[];
   raw_text?: string;
+  ocr_meta?: OCRMeta;
+  lines?: OCRLine[];
   trace?: PipelineTrace | null;
   official_portal?: OfficialPortal | null;
   workflow_state?: Record<string, any>;
 }
+
 
 export interface CalendarEvent {
   id: string;

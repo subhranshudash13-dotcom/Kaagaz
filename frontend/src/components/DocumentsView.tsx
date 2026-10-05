@@ -18,7 +18,14 @@ import {
   Zap,
   Building2,
   Copy,
-  Check
+  Check,
+  Download,
+  Upload,
+  Layers,
+  FileCode,
+  Scan,
+  RefreshCw,
+  Plus,
 } from 'lucide-react';
 import { PipelineTraceModal } from './PipelineTraceModal';
 
@@ -39,9 +46,10 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
-  const [activeDetailTab, setActiveDetailTab] = useState<'facts' | 'ocr'>('facts');
+  const [activeDetailTab, setActiveDetailTab] = useState<'facts' | 'ocr' | 'actions'>('facts');
   const [isTraceModalOpen, setIsTraceModalOpen] = useState(false);
   const [copiedOcr, setCopiedOcr] = useState(false);
+  const [ocrSearchFilter, setOcrSearchFilter] = useState('');
 
   // Filter documents
   const filteredDocs = documents.filter((d) => {
@@ -94,12 +102,22 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
     setTimeout(() => setCopiedOcr(false), 2000);
   };
 
+  const handleDownloadOcrTxt = (doc: DocumentItem) => {
+    const element = document.createElement('a');
+    const file = new Blob([doc.ocr_text || 'No OCR text available.'], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = `${doc.original_filename.replace(/\.[^/.]+$/, '')}_OCR_Transcript.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
   const portal = selectedDocDetail?.official_portal;
 
   return (
     <div className="space-y-8 font-sans pb-12 max-w-6xl mx-auto">
       
-      {/* 1. Reassuring Executive Header */}
+      {/* 1. Header with Vault Metrics */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[var(--hairline)]">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -107,14 +125,17 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
               LOCAL SQLITE VAULT
             </span>
             <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20">
-              {documents.length} Records
+              {documents.length} Confirmed Records
+            </span>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1">
+              <Zap className="w-3 h-3" /> Multi-Engine OCR Active
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold font-heading text-[var(--primary)] tracking-tight">
-            Document Archive & Provenance
+            Document Archive & OCR Studio
           </h1>
           <p className="text-sm text-[var(--secondary)]">
-            Searchable store of confirmed documents with verifiable field provenance and official portal validation.
+            Searchable store of confirmed documents with verifiable field provenance, high-res OCR transcripts, and official portal validation.
           </p>
         </div>
 
@@ -253,14 +274,15 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
             {/* Inspector Header */}
             <div className="flex items-start justify-between border-b border-[var(--hairline)] pb-4">
               <div className="space-y-0.5">
-                <div className="text-[10px] font-mono uppercase text-[var(--accent)] font-bold tracking-wider">
-                  PROVENANCE INSPECTOR
+                <div className="flex items-center gap-2 text-[10px] font-mono uppercase text-[var(--accent)] font-bold tracking-wider">
+                  <Scan className="w-3.5 h-3.5" />
+                  PROVENANCE & OCR STUDIO
                 </div>
                 <h3 className="text-lg font-bold font-heading text-[var(--primary)]">
                   {selectedDocDetail.title}
                 </h3>
                 <div className="text-xs font-mono text-[var(--muted)]">
-                  ID: {selectedDocDetail.id}
+                  Original File: {selectedDocDetail.original_filename} ({selectedDocDetail.file_type})
                 </div>
               </div>
 
@@ -274,7 +296,7 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
 
             {/* Official Portal Phishing Shield Card */}
             {portal && (
-              <div className="p-4 rounded-xl bg-[var(--success-bg)] border border-[var(--success)]/30 space-y-2">
+              <div className="p-4 rounded-xl bg-[var(--success-bg)] border border-[var(--success)]/30 space-y-2 shadow-2xs">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-[var(--success)] flex items-center gap-1.5">
                     <ShieldCheck className="w-4 h-4" />
@@ -290,9 +312,9 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
                     href={portal.portal_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--success)] hover:underline pt-1"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--success)] hover:underline pt-1 cursor-pointer"
                   >
-                    <span>Open Official Gateway</span>
+                    <span>{portal.action_label || 'Open Official Gateway'}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 )}
@@ -300,30 +322,47 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
             )}
 
             {/* Inspector Tabs */}
-            <div className="flex items-center gap-3 border-b border-[var(--hairline)] pb-2 text-xs font-mono">
+            <div className="flex items-center gap-4 border-b border-[var(--hairline)] pb-2 text-xs font-mono">
               <button
                 onClick={() => setActiveDetailTab('facts')}
-                className={`pb-1.5 font-bold transition-all cursor-pointer ${
+                className={`pb-1.5 font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeDetailTab === 'facts'
                     ? 'border-b-2 border-[var(--accent)] text-[var(--accent)]'
                     : 'text-[var(--muted)] hover:text-[var(--primary)]'
                 }`}
               >
-                EXTRACTED FACTS
+                <Layers className="w-3.5 h-3.5" />
+                <span>CONFIRMED FACTS</span>
               </button>
+
               <button
                 onClick={() => setActiveDetailTab('ocr')}
-                className={`pb-1.5 font-bold transition-all cursor-pointer ${
+                className={`pb-1.5 font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeDetailTab === 'ocr'
                     ? 'border-b-2 border-[var(--accent)] text-[var(--accent)]'
                     : 'text-[var(--muted)] hover:text-[var(--primary)]'
                 }`}
               >
-                RAW OCR TEXT LAYER
+                <FileCode className="w-3.5 h-3.5" />
+                <span>OCR TRANSCRIPT</span>
               </button>
+
+              {selectedDocDetail.actions && selectedDocDetail.actions.length > 0 && (
+                <button
+                  onClick={() => setActiveDetailTab('actions')}
+                  className={`pb-1.5 font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeDetailTab === 'actions'
+                      ? 'border-b-2 border-[var(--accent)] text-[var(--accent)]'
+                      : 'text-[var(--muted)] hover:text-[var(--primary)]'
+                  }`}
+                >
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>ACTIONS ({selectedDocDetail.actions.length})</span>
+                </button>
+              )}
             </div>
 
-            {/* Tab 1: Extracted Facts */}
+            {/* TAB 1: EXTRACTED FACTS */}
             {activeDetailTab === 'facts' && (
               <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1">
                 {Array.isArray(selectedDocDetail.facts) && selectedDocDetail.facts.length > 0 ? (
@@ -355,22 +394,88 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
               </div>
             )}
 
-            {/* Tab 2: Raw OCR Text Layer */}
+            {/* TAB 2: RAW OCR TRANSCRIPT STUDIO */}
             {activeDetailTab === 'ocr' && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-mono text-[var(--muted)]">
-                  <span>OCR Buffer</span>
-                  <button
-                    onClick={() => handleCopyOcr(selectedDocDetail.ocr_text || '')}
-                    className="inline-flex items-center gap-1 hover:text-[var(--primary)] cursor-pointer"
+              <div className="space-y-3">
+                
+                {/* Search & Export Toolbar */}
+                <div className="flex items-center justify-between gap-2 text-xs font-mono">
+                  <div className="flex-1 relative">
+                    <input
+                      type="text"
+                      placeholder="Filter words inside OCR transcript..."
+                      value={ocrSearchFilter}
+                      onChange={(e) => setOcrSearchFilter(e.target.value)}
+                      className="w-full px-2.5 py-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--hairline)] text-[11px] font-mono text-[var(--primary)] placeholder:text-[var(--muted)] outline-none focus:border-[var(--accent)]"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      onClick={() => handleCopyOcr(selectedDocDetail.ocr_text || '')}
+                      className="p-1.5 rounded-lg bg-[var(--surface-raised)] hover:bg-[var(--accent)]/15 border border-[var(--hairline)] text-[var(--secondary)] hover:text-[var(--accent)] transition-all cursor-pointer"
+                      title="Copy Full OCR Transcript"
+                    >
+                      {copiedOcr ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
+
+                    <button
+                      onClick={() => handleDownloadOcrTxt(selectedDocDetail)}
+                      className="p-1.5 rounded-lg bg-[var(--surface-raised)] hover:bg-[var(--accent)]/15 border border-[var(--hairline)] text-[var(--secondary)] hover:text-[var(--accent)] transition-all cursor-pointer"
+                      title="Download OCR Transcript as .txt"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* OCR Text Box */}
+                <div className="p-4 rounded-xl bg-[var(--surface-sunken)] border border-[var(--hairline)] font-mono text-xs max-h-80 overflow-y-auto whitespace-pre-wrap leading-relaxed text-[var(--secondary)] select-text">
+                  {selectedDocDetail.ocr_text ? (
+                    ocrSearchFilter ? (
+                      selectedDocDetail.ocr_text
+                        .split(new RegExp(`(${ocrSearchFilter})`, 'gi'))
+                        .map((part, i) =>
+                          part.toLowerCase() === ocrSearchFilter.toLowerCase() ? (
+                            <mark key={i} className="bg-[var(--accent)] text-white px-0.5 rounded">
+                              {part}
+                            </mark>
+                          ) : (
+                            part
+                          )
+                        )
+                    ) : (
+                      selectedDocDetail.ocr_text
+                    )
+                  ) : (
+                    <span className="text-[var(--muted)] italic">No raw OCR text layer cached for this document.</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: GENERATED ACTIONS */}
+            {activeDetailTab === 'actions' && (
+              <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                {selectedDocDetail.actions?.map((act) => (
+                  <div
+                    key={act.id}
+                    className="p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--hairline)] text-xs space-y-1"
                   >
-                    {copiedOcr ? <Check className="w-3.5 h-3.5 text-[var(--success)]" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedOcr ? 'Copied' : 'Copy Text'}</span>
-                  </button>
-                </div>
-                <div className="p-4 rounded-xl bg-[var(--surface-raised)] border border-[var(--hairline)] font-mono text-xs max-h-96 overflow-y-auto whitespace-pre-wrap leading-relaxed text-[var(--secondary)]">
-                  {selectedDocDetail.ocr_text || 'No raw OCR layer cached.'}
-                </div>
+                    <div className="flex items-center justify-between">
+                      <strong className="text-[var(--primary)] font-bold">{act.title}</strong>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase bg-[var(--accent)]/10 text-[var(--accent)]">
+                        {act.urgency}
+                      </span>
+                    </div>
+                    <p className="text-[var(--secondary)]">{act.description}</p>
+                    {act.due_date && (
+                      <div className="text-[11px] font-mono text-[var(--muted)]">
+                        Due: {act.due_date} {act.amount && `• ₹${act.amount}`}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
 
@@ -392,3 +497,4 @@ export const DocumentsView: React.FC<DocumentsViewProps> = ({
     </div>
   );
 };
+

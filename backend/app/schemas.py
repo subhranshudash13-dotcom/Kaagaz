@@ -28,6 +28,8 @@ class ProvisionalExtractionResponse(BaseModel):
     facts: List[FactSchema]
     validation_issues: List[str]
     raw_text: Optional[str] = None
+    ocr_meta: Optional[Dict[str, Any]] = None
+    lines: Optional[List[Dict[str, Any]]] = None
     trace: Optional[Dict[str, Any]] = None
     workflow_state: Optional[Dict[str, Any]] = None
     official_portal: Optional[Dict[str, Any]] = None

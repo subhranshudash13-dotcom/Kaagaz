@@ -73,8 +73,10 @@ async def run_ocr_test():
     # 3. Test Full DocumentExtractor Pipeline
     print("\n--- Running Full End-to-End Extraction Pipeline ---")
     extractor = DocumentExtractor()
-    doc_type, conf, reason, data, facts, issues, raw_text = await extractor.process_document(sample_bill_path, ".png")
+    doc_type, conf, reason, data, facts, issues, raw_text, ocr_full = await extractor.process_document(sample_bill_path, ".png")
     print(f"Classified Doc Type: {doc_type} (Confidence: {conf})")
+    print(f"OCR Engine Used: {ocr_full.get('engine_used')}")
+
     print(f"Reason: {reason}")
     print("\nExtracted Structured Fields:")
     for k, v in data.items():

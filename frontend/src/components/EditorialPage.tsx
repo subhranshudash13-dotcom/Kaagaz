@@ -471,29 +471,30 @@ export const EditorialPage: React.FC<EditorialPageProps> = ({
           <article className="space-y-8 max-w-full">
             <div>
               <h1 className="text-[36px] sm:text-[44px] md:text-[52px] lg:text-[58px] font-extrabold text-[var(--primary)] tracking-tight font-heading leading-[1.08] mb-2">
-                Family Emergency Handover Guide
+                OCR Intelligence & Document Processing Guide
               </h1>
               <p className="text-[var(--muted)] font-mono text-xs md:text-sm">
-                Preparedness Standard • 1-Click Briefcase for Household Administration
+                Local-First Standard • Multi-Engine Deep OCR & Vector Parsing
               </p>
             </div>
 
             <div className="bg-[var(--surface)] border border-[var(--hairline)] rounded-2xl p-8 sm:p-10 md:p-14 shadow-sm">
               <div className="border-l-4 border-amber-500 pl-6 md:pl-8 py-3.5 text-[var(--primary)] italic text-base md:text-lg leading-relaxed bg-[var(--surface-raised)] rounded-r-2xl mb-12">
-                "In most households, one person manages all utility meters, property taxes, LPG cylinders, health policies, and service contacts. If that person falls ill or travels, the family faces immense stress locating account numbers."
+                "Kaagaz operates 100% locally on your computer with a hybrid multi-engine OCR architecture: PyMuPDF high-fidelity vector parsing, RapidOCR ONNX deep neural recognition, and native Windows Media OCR."
               </div>
 
               <section className="mb-2">
                 <h2 className="text-2xl md:text-[28px] lg:text-[32px] font-bold text-[var(--primary)] tracking-tight mb-4 font-heading">
-                  1-Click Physical Emergency Briefcase
+                  High-Precision Local Document Ingestion
                 </h2>
                 <p className="text-[var(--secondary)] leading-relaxed text-base md:text-[17px] max-w-[900px]">
-                  Kaagaz allows you to export a consolidated physical PDF dossier containing all active consumer IDs, policy renewal dates, and verified customer care numbers. Keep a printed copy in your home file cabinet for complete family peace of mind.
+                  Whether you upload a crisp digital PDF invoice, a smartphone camera receipt, or a multi-page municipal property tax circular, Kaagaz renders and extracts clean text blocks, exact numerical amounts, and due dates with zero cloud dependencies.
                 </p>
               </section>
             </div>
           </article>
         )}
+
 
         {/* ========================================================
             PAGE: ABOUT KAAGAZ

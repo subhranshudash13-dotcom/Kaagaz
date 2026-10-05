@@ -19,10 +19,10 @@ class DocumentExtractor:
         """Runs multi-pass OCR and direct extraction pipeline."""
         return await self.ocr_engine.process_file(file_path, file_type)
 
-    async def process_document(self, file_path: Path, file_type: str) -> Tuple[str, float, str, Dict[str, Any], List[FactSchema], List[str], str]:
+    async def process_document(self, file_path: Path, file_type: str) -> Tuple[str, float, str, Dict[str, Any], List[FactSchema], List[str], str, Dict[str, Any]]:
         """
         Executes full extraction pipeline:
-        1. Multi-pass OCR / text extraction with provenance
+        1. Multi-pass OCR / text extraction with provenance & layout bounding boxes
         2. Classify document via Gemma / local heuristics
         3. Extract structured JSON via AI provider
         4. Validate extracted fields against Pydantic rules
@@ -30,7 +30,7 @@ class DocumentExtractor:
         """
         ocr_result = await self.extract_raw_text(file_path, file_type)
         raw_text = ocr_result.get("text", "").strip()
-        ocr_confidence = ocr_result.get("confidence", 0.85)
+        ocr_confidence = ocr_result.get("confidence", 0.90)
 
         if not raw_text:
             raw_text = f"Unreadable document content in {file_path.name}"
@@ -63,4 +63,5 @@ class DocumentExtractor:
                     source_page=1
                 ))
 
-        return doc_type, overall_confidence, reason, extracted_data, facts, validation_issues, raw_text
+        return doc_type, overall_confidence, reason, extracted_data, facts, validation_issues, raw_text, ocr_result
+

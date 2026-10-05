@@ -7,7 +7,6 @@ import { CalendarView } from './components/CalendarView';
 import { DocumentsView } from './components/DocumentsView';
 import { AskKaagazView } from './components/AskKaagazView';
 import { DocumentReviewModal } from './components/DocumentReviewModal';
-import { FamilyBriefcaseModal } from './components/FamilyBriefcaseModal';
 import { ModelStatusModal } from './components/ModelStatusModal';
 import { FooterModals, FooterPageId } from './components/FooterModals';
 import { EditorialPage } from './components/EditorialPage';
@@ -28,7 +27,6 @@ export default function App() {
   // Navigation State
   const [viewMode, setViewMode] = useState<'landing' | 'app'>('landing');
   const [currentTab, setCurrentTab] = useState<'home' | 'actions' | 'calendar' | 'documents' | 'assistant'>('home');
-  const [showBriefcaseModal, setShowBriefcaseModal] = useState(false);
   const [showModelModal, setShowModelModal] = useState(false);
   const [activeFooterPage, setActiveFooterPage] = useState<FooterPageId>(null);
 
@@ -509,15 +507,11 @@ export default function App() {
         }}
       />
 
-      {/* 5. Family Emergency Briefcase Modal */}
-      {showBriefcaseModal && (
-        <FamilyBriefcaseModal onClose={() => setShowBriefcaseModal(false)} />
-      )}
-
-      {/* 6. AI & Privacy Diagnostics Modal */}
+      {/* 5. AI & Privacy Diagnostics Modal */}
       {showModelModal && (
         <ModelStatusModal onClose={() => setShowModelModal(false)} />
       )}
+
 
       {/* 7. Sub-Page Modals */}
       <FooterModals

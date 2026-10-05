@@ -88,11 +88,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPage, onLaunchApp }) => {
                   onClick={() => onOpenPage('emergency-guide')}
                   className="hover:text-[var(--accent)] transition-colors text-left cursor-pointer"
                 >
-                  Emergency Briefcase
+                  OCR Intelligence Guide
                 </button>
               </li>
             </ul>
           </div>
+
 
           {/* Column 4: Engineering */}
           <div>

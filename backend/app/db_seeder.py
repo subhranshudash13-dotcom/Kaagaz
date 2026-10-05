@@ -67,8 +67,8 @@ def seed_demo_household_if_empty(db: Session, force_clean: bool = False):
     db.add(ActionItemModel(
         document_id=doc_sep_id,
         title="Pay Torrent Power Electricity Bill (₹2,481.00)",
-        description="Electricity bill for Sep 2026 cycle. Usage 240 kWh (+18% vs Aug).",
-        due_date="2026-10-15",
+        description="Electricity bill for Sep 2026 cycle. Usage 240 kWh (+18% vs Aug). Avoid power disconnect.",
+        due_date="2026-10-07",
         amount=2481.0,
         urgency="RED",
         status="pending",
@@ -130,18 +130,18 @@ def seed_demo_household_if_empty(db: Session, force_clean: bool = False):
         doc_type="electricity_bill",
         title="Airtel Broadband Bill (October 2026)",
         status="confirmed",
-        ocr_text="BHARTI AIRTEL BROADBAND SERVICES\nInvoice for Oct 2026\nAccount: 011-8849201\nPlan: 300 Mbps Fiber Unlimited + OTT Bundle\nAmount Due: INR 1,179.00\nPayment Due Date: 2026-10-15",
+        ocr_text="BHARTI AIRTEL BROADBAND SERVICES\nInvoice for Oct 2026\nAccount: 011-8849201\nPlan: 300 Mbps Fiber Unlimited + OTT Bundle\nAmount Due: INR 1,179.00\nPayment Due Date: 2026-10-08",
         created_at=now - datetime.timedelta(days=1)
     )
     db.add(doc_air)
-    for fn, val in [("provider", "Bharti Airtel Broadband"), ("account_reference", "011-8849201"), ("amount_due", "1179.00"), ("due_date", "2026-10-15"), ("plan", "300 Mbps Fiber Unlimited")]:
+    for fn, val in [("provider", "Bharti Airtel Broadband"), ("account_reference", "011-8849201"), ("amount_due", "1179.00"), ("due_date", "2026-10-08"), ("plan", "300 Mbps Fiber Unlimited")]:
         db.add(FactModel(document_id=doc_air_id, field_name=fn, raw_value=val, normalized_value=val, confidence=0.99, user_confirmed=True))
 
     db.add(ActionItemModel(
         document_id=doc_air_id,
         title="Pay Airtel Fiber Broadband Bill (₹1,179.00)",
         description="Monthly fiber internet invoice with auto-debit fallback.",
-        due_date="2026-10-15",
+        due_date="2026-10-08",
         amount=1179.0,
         urgency="RED",
         status="pending",
