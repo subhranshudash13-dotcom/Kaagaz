@@ -210,8 +210,18 @@ export default function App() {
   };
 
   // View Document Detail
-  const handleViewDetail = (docId: string) => {
-    const found = documents.find((d) => d.id === docId);
+  const handleViewDetail = async (docId: string) => {
+    let found = documents.find((d) => d.id === docId);
+    if (!found) {
+      try {
+        const res = await fetch(`${API_BASE}/documents/${docId}`);
+        if (res.ok) {
+          found = await res.json();
+        }
+      } catch (err) {
+        console.error('Failed to fetch doc detail:', err);
+      }
+    }
     if (found) {
       setSelectedDocDetail(found);
       navigateTo('documents');

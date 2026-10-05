@@ -270,10 +270,26 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
           <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
             {selectedEvents.length === 0 ? (
-              <div className="text-center py-16 space-y-2">
+              <div className="text-center py-10 space-y-4">
                 <Clock className="w-8 h-8 text-[var(--muted)] mx-auto opacity-40" />
-                <p className="text-xs font-semibold text-[var(--primary)]">No events on this date</p>
-                <p className="text-[11px] text-[var(--secondary)]">Select a highlighted day on the calendar to view scheduled deadlines.</p>
+                <div>
+                  <p className="text-xs font-semibold text-[var(--primary)]">No events on this date</p>
+                  <p className="text-[11px] text-[var(--secondary)]">Select a date with an indicator dot or jump to an upcoming event:</p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 justify-center pt-2">
+                  {Object.keys(eventsByDay).map((dayStr) => {
+                    const d = parseInt(dayStr, 10);
+                    return (
+                      <button
+                        key={d}
+                        onClick={() => setSelectedDay(d)}
+                        className="px-2.5 py-1 rounded-lg bg-[var(--surface-raised)] border border-[var(--hairline)] hover:border-[var(--accent)] text-[11px] font-mono font-bold text-[var(--primary)] transition-all cursor-pointer"
+                      >
+                        {monthNames[currentMonth - 1].slice(0, 3)} {d} ({eventsByDay[d].length})
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               selectedEvents.map((ev, i) => (

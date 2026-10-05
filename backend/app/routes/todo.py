@@ -48,6 +48,7 @@ async def get_categorized_todos(db: Session = Depends(get_db)):
         "total_pending": len(do_now) + len(coming_up) + len(monitored)
     }
 
+@router.post("/{action_id}/toggle")
 @router.patch("/{action_id}/toggle")
 async def toggle_action_status(action_id: str, db: Session = Depends(get_db)):
     action = db.query(ActionItemModel).filter(ActionItemModel.id == action_id).first()

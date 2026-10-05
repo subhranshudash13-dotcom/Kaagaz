@@ -341,33 +341,37 @@ async def get_family_briefcase(db: Session = Depends(get_db)):
 
     for d in docs:
         facts = {f.field_name: f.normalized_value or f.raw_value for f in d.facts}
-        if d.doc_type == "electricity_bill":
+        doc_type = (d.doc_type or "").lower()
+        title_lower = (d.title or "").lower()
+
+        if doc_type == "electricity_bill" or "bill" in title_lower or "gas" in title_lower or "fiber" in title_lower or "broadband" in title_lower:
             utilities.append({
-                "provider": facts.get("provider", "Utility Provider"),
-                "account_number": facts.get("account_reference", "N/A"),
-                "last_amount": facts.get("amount_due", "—"),
-                "due_date": facts.get("due_date", "—"),
-                "meter_number": facts.get("meter_number", "—")
+                "provider": facts.get("provider") or facts.get("society_name") or d.title,
+                "account_number": facts.get("account_reference") or facts.get("unit_reference") or "Active Account",
+                "last_amount": facts.get("amount_due") or facts.get("amount") or "—",
+                "due_date": facts.get("due_date") or "—",
+                "meter_number": facts.get("meter_number") or facts.get("plan") or "Residential"
             })
-        elif d.doc_type == "warranty":
+        elif doc_type == "warranty" or "warranty" in title_lower or "applecare" in title_lower:
             warranties.append({
-                "product": facts.get("product", "Household Appliance"),
-                "brand": facts.get("brand", "—"),
-                "serial_number": facts.get("serial_number", "—"),
-                "expiry_date": facts.get("expiry_date", "—"),
-                "service_contact": facts.get("service_contact", "—")
+                "product": facts.get("product") or d.title,
+                "brand": facts.get("brand") or "Manufacturer",
+                "serial_number": facts.get("serial_number") or facts.get("agreement_number") or "Registered",
+                "expiry_date": facts.get("expiry_date") or facts.get("coverage_status") or "Active",
+                "service_contact": facts.get("service_contact") or facts.get("support_phone") or facts.get("customer_care") or "1800-40-7267864"
             })
-        elif d.doc_type == "notice":
+        else:
+            # Notices, Insurances, Education, Taxes
             notices.append({
-                "issuer": facts.get("issuer", "Municipal Office"),
-                "subject": facts.get("subject", "—"),
-                "deadline": facts.get("deadline", "—"),
-                "amount": facts.get("amount", "—")
+                "issuer": facts.get("issuer") or facts.get("insurer") or facts.get("institution") or facts.get("society_name") or facts.get("clinic") or d.title,
+                "subject": facts.get("subject") or facts.get("student_name") or facts.get("vehicle_model") or facts.get("procedure") or d.title,
+                "deadline": facts.get("deadline") or facts.get("due_date") or facts.get("renewal_due_date") or facts.get("policy_expiry") or facts.get("appointment_date") or "Scheduled",
+                "amount": facts.get("amount") or facts.get("total_amount") or facts.get("annual_premium") or facts.get("amount_due") or facts.get("amount_paid") or "—"
             })
 
     return {
         "household_owner": "Rajesh Kumar",
-        "generated_at": "Today",
+        "generated_at": "October 2026",
         "utilities": utilities,
         "warranties": warranties,
         "notices": notices,

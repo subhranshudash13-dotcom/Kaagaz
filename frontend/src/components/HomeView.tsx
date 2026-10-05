@@ -65,7 +65,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             Good morning, Rajesh.
           </h1>
           <p className="text-sm text-[var(--secondary)]">
-            You have <strong className="text-[var(--primary)] font-semibold">{urgentActions.length || 1} urgent item</strong> and {upcomingActions.length || 5} upcoming deadlines across 65 organized documents.
+            You have <strong className="text-[var(--primary)] font-semibold">{urgentActions.length} urgent {urgentActions.length === 1 ? 'item' : 'items'}</strong> and {upcomingActions.length} upcoming deadlines across {dashboardData.stats?.total_documents || (dashboardData.recent_documents?.length || 13)} organized documents.
           </p>
         </div>
 
@@ -106,99 +106,53 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </button>
         </div>
 
-        {/* Clean Ledger Rows */}
+        {/* Dynamic Ledger Rows */}
         <div className="divide-y divide-[var(--hairline)]">
-          
-          {/* Item 1: Electricity Bill */}
-          <div className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
-            <div className="flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-rose-500 mt-1.5 shrink-0" />
-              <div className="space-y-0.5">
-                <div className="text-sm font-semibold text-[var(--primary)] flex items-center gap-2">
-                  <span>Electricity bill</span>
-                  <span className="text-xs font-normal text-[var(--muted)] font-mono">• Torrent Power</span>
+          {(dashboardData.needs_attention || []).slice(0, 5).map((act, idx) => {
+            const isUrgent = act.urgency === 'RED' || act.urgency === 'OVERDUE';
+            const isWarning = act.urgency === 'YELLOW';
+            return (
+              <div key={act.id || idx} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
+                <div className="flex items-start gap-3">
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${
+                      isUrgent ? 'bg-rose-500 animate-pulse' : isWarning ? 'bg-amber-500' : 'bg-[var(--accent)]'
+                    }`}
+                  />
+                  <div className="space-y-0.5">
+                    <div className="text-sm font-semibold text-[var(--primary)] flex items-center gap-2">
+                      <span>{act.title}</span>
+                      {act.due_date && (
+                        <span className="text-xs font-normal text-[var(--muted)] font-mono">
+                          • Due {act.due_date}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-xs text-[var(--secondary)]">
+                      {act.description || act.why_reason || 'Verified from document record.'}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-xs text-[var(--secondary)]">
-                  Due tomorrow <span className="text-[var(--muted)] font-mono">•</span> <span className="text-rose-600 font-medium">↑ ₹379 more than last month</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="flex items-center gap-4 sm:self-center pl-5 sm:pl-0">
-              <span className="text-sm font-mono font-bold text-[var(--primary)]">
-                ₹2,481
-              </span>
-              <button
-                onClick={() => {
-                  const doc = dashboardData.needs_attention?.[0];
-                  if (doc?.document_id) onViewDocument(doc.document_id);
-                  else onNavigateTab('actions');
-                }}
-                className="px-3 py-1 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-medium rounded transition-all cursor-pointer"
-              >
-                Review →
-              </button>
-            </div>
-          </div>
-
-          {/* Item 2: Property Tax */}
-          <div className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
-            <div className="flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-rose-500 mt-1.5 shrink-0" />
-              <div className="space-y-0.5">
-                <div className="text-sm font-semibold text-[var(--primary)] flex items-center gap-2">
-                  <span>Property tax notice</span>
-                  <span className="text-xs font-normal text-[var(--muted)] font-mono">• Municipal Corporation</span>
-                </div>
-                <div className="text-xs text-[var(--secondary)]">
-                  Due October 31 <span className="text-[var(--muted)] font-mono">•</span> Assessment return required
+                <div className="flex items-center gap-3 sm:self-center pl-5 sm:pl-0 shrink-0">
+                  {act.amount ? (
+                    <span className="text-sm font-mono font-bold text-[var(--primary)]">
+                      ₹{act.amount.toLocaleString('en-IN')}
+                    </span>
+                  ) : null}
+                  <button
+                    onClick={() => {
+                      if (act.document_id) onViewDocument(act.document_id);
+                      else onNavigateTab('actions');
+                    }}
+                    className="px-3 py-1 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-semibold rounded-lg transition-all cursor-pointer shadow-xs"
+                  >
+                    Review →
+                  </button>
                 </div>
               </div>
-            </div>
-
-            <div className="flex items-center gap-4 sm:self-center pl-5 sm:pl-0">
-              <span className="text-sm font-mono font-bold text-[var(--primary)]">
-                ₹3,240
-              </span>
-              <button
-                onClick={() => {
-                  const doc = dashboardData.needs_attention?.[1];
-                  if (doc?.document_id) onViewDocument(doc.document_id);
-                  else onNavigateTab('actions');
-                }}
-                className="px-3 py-1 bg-[var(--surface-raised)] border border-[var(--hairline)] hover:border-[var(--accent)] text-[var(--primary)] text-xs font-medium rounded transition-all cursor-pointer"
-              >
-                View Document →
-              </button>
-            </div>
-          </div>
-
-          {/* Item 3: Laptop Warranty */}
-          <div className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group">
-            <div className="flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-              <div className="space-y-0.5">
-                <div className="text-sm font-semibold text-[var(--primary)] flex items-center gap-2">
-                  <span>Laptop warranty expiration</span>
-                  <span className="text-xs font-normal text-[var(--muted)] font-mono">• Dell Inspiron / Samsung</span>
-                </div>
-                <div className="text-xs text-[var(--secondary)]">
-                  18 days left <span className="text-[var(--muted)] font-mono">•</span> Expires November 18
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 sm:self-center pl-5 sm:pl-0">
-              <span className="text-xs font-mono text-[var(--muted)]">Coverage Active</span>
-              <button
-                onClick={() => onNavigateTab('documents')}
-                className="px-3 py-1 bg-[var(--surface-raised)] border border-[var(--hairline)] hover:border-[var(--accent)] text-[var(--primary)] text-xs font-medium rounded transition-all cursor-pointer"
-              >
-                View →
-              </button>
-            </div>
-          </div>
-
+            );
+          })}
         </div>
       </div>
 
