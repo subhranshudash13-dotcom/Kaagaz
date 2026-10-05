@@ -1,0 +1,53 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kaagaz-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DATABASE_URL=sqlite:///./data/db/kaagaz.db
+      - STORAGE_DIR=./data/documents
+      - THUMBNAILS_DIR=./data/thumbnails
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=gemma2:2b
+    volumes:
+      - backend-data:/app/data
+    networks:
+      - kaagaz-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: kaagaz-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - kaagaz-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: kaagaz-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    networks:
+      - kaagaz-network
+
+volumes:
+  backend-data:
+  ollama-models:
+
+networks:
+  kaagaz-network:
+    driver: bridge
